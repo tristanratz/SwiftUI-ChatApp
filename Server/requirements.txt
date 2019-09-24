@@ -1,2 +1,2 @@
-twisted
-numpy
+twisted==19.7.0
+numpy==1.17.2
