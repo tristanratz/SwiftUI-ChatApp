@@ -3,6 +3,7 @@
 ## Server
 
 Before you start a client it is mandatory to start the server.
+The server is included in the Server/ directory as the name may suggest.
 Make sure python 3.6+ is installed.
 
 ```
@@ -19,6 +20,7 @@ python main.py
 That's it.
 
 ## Client
+The App is included in the ClientApp/ directory.
 The client was tested in XCode Beta 6
 It is currently working best on iPhones. You can just open the project in Xcode and run it.
 
