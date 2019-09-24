@@ -13,10 +13,9 @@ import SwiftUI
 struct ContentView: View {
     @State private var writing:Bool = false
     
-    @State private var elements:[StringID] = [StringID("Messages"), StringID("Message 1")]
     @State private var inputText:String = ""
+    @EnvironmentObject private var chat:Chat
     //@State private var messages:[Message] = [Message(Sender(name: "TestSender", color: .green), message: "Hello World! This is a long test messsage, which hopefully will exceed one line")]
-    @State private var chat:Chat = Chat("192.168.2.111", port: 8000)
     
     var body: some View {
         NavigationView {

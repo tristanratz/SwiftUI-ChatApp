@@ -6,7 +6,7 @@
 //  Copyright © 2019 Tristan Ratz. All rights reserved.
 //
 
-import Foundation
+import Combine
 import SwiftUI
 
 class Sender {
@@ -31,12 +31,13 @@ class Message : Identifiable {
     }
 }
 
-class Chat {
+class Chat : ObservableObject {
+        
     var socket:Socket
     var chatName:String = ""
     
     var sender:[Sender]
-    var messages:[Message] = []
+    @Published var messages:[Message] = []
     
     init(_ ip:String, port:Int) {
         sender = [Sender(name:"server", color:.gray)]
@@ -45,7 +46,7 @@ class Chat {
     }
     
     func signIn() {
-        self.chatName = "Tristan"
+        self.chatName = "Mac"
         socket.sendText(text: chatName)
     }
     
@@ -53,7 +54,7 @@ class Chat {
         socket.destroySession()
         var server:Sender?
         for s in sender {
-            if s.name == "Server" {
+            if s.name == "server" {
                 server = s
                 break
             }
@@ -77,7 +78,6 @@ class Chat {
         }
         
         var message = String(m.last!)
-        message = String(message.dropLast())
                 
         if String(m.first!) == "server" && message == "name" {
             signIn()
