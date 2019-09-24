@@ -15,13 +15,13 @@ struct ContentView: View {
     
     @State private var elements:[StringID] = [StringID("Messages"), StringID("Message 1")]
     @State private var inputText:String = ""
-    @State private var messages:[Message] = [Message(Sender(name: "TestSender", color: .green), message: "Hello World! This is a long test messsage, which hopefully will exceed one line")]
+    //@State private var messages:[Message] = [Message(Sender(name: "TestSender", color: .green), message: "Hello World! This is a long test messsage, which hopefully will exceed one line")]
     @State private var chat:Chat = Chat("192.168.2.111", port: 8000)
     
     var body: some View {
         NavigationView {
             VStack {
-                List(self.messages) { el in
+                List(self.chat.messages) { el in
                     HStack {
                         Text(el.sender.name)
                             .foregroundColor(el.sender.color)
@@ -42,13 +42,15 @@ struct ContentView: View {
                 }.offset(y:(writing ? -300 : 0))
             }
         .navigationBarTitle(Text("Chat"))
+            .navigationBarItems(leading: Button(action:chat.signOut){
+            Text("Logout")
+        })
         }
     }
     
     private func send() {
-        self.elements.append(StringID(self.inputText))
+        self.chat.sendMessage(message: self.inputText)
         self.inputText = ""
-        print("Test")
     }
 
 }

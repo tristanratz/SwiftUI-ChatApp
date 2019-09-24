@@ -35,23 +35,61 @@ class Chat {
     var socket:Socket
     var chatName:String = ""
     
-    var sender:[Sender] = []
+    var sender:[Sender]
     var messages:[Message] = []
     
     init(_ ip:String, port:Int) {
+        sender = [Sender(name:"server", color:.gray)]
         socket = Socket(ip,port,.utf8)
+        socket.stringHandler = callback
     }
     
     func signIn() {
-        
+        self.chatName = "Tristan"
+        socket.sendText(text: chatName)
     }
     
     func signOut() {
-        
+        socket.destroySession()
+        var server:Sender?
+        for s in sender {
+            if s.name == "Server" {
+                server = s
+                break
+            }
+        }
+        messages.append(Message(server!, message: "You left the chat"))
     }
     
-    func sendMessage() {
+    func sendMessage(message:String) {
+        if message == "" {
+            return
+        }
+        socket.sendText(text: self.chatName+":msg:"+message)
+        newMessage(content: message, name: "You")
+    }
+    
+    func callback(content:String, ip:String) {
+        let m = content.split(separator: ":")
         
+        if (m.count != 3) {
+            return
+        }
+        
+        var message = String(m.last!)
+        message = String(message.dropLast())
+                
+        if String(m.first!) == "server" && message == "name" {
+            signIn()
+            return
+        }
+        
+        if String(m.first!) == "server" && message.contains("Welcome") {
+            
+        }
+
+        
+        newMessage(content: message, name: String(m[0]))
     }
     
     func newMessage(content:String, name:String) {
@@ -64,9 +102,13 @@ class Chat {
         }
         
         if sender != nil {
+            print("Already known sender: ", name)
             messages.append(Message(sender!, message: content))
             return
         }
+        
+        
+        print("Not known sender: ", name)
         
         let color:Color
         switch Int.random(in:0...5) {
@@ -92,6 +134,8 @@ class Chat {
             color = Color.white
         }
         
-        messages.append(Message(Sender(name: name, color: color), message: content))
+        sender = Sender(name: name, color: color)
+        self.sender.append(sender!)
+        messages.append(Message(sender!, message: content))
     }
 }
