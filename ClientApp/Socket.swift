@@ -13,6 +13,11 @@ class Socket:NSObject {
     let ip:String
     let textEncoding:String.Encoding
     
+    let connectionTimeout:Double
+    var connectionTimer:Timer?
+    var inputStreamReady:Bool = false
+    var outputStreamReady:Bool = false
+    
     private var inputStream: InputStream!
     private var outputStream: OutputStream!
     private let maxReadLength = 4096
@@ -22,10 +27,13 @@ class Socket:NSObject {
     var dataHandler:((Data,String) -> Void)?
     var stringHandler:((String,String) -> Void)?
     
+    var connectionCallback:((Bool) -> Void)?
+    
     init(_ ip:String, _ port:Int, _ textEncoding:String.Encoding) {
         self.port = port
         self.ip = ip
         self.textEncoding = textEncoding
+        self.connectionTimeout = 1.0
         
         super.init()
         
@@ -44,10 +52,34 @@ class Socket:NSObject {
         self.inputStream.schedule(in: .main, forMode: .default)
         self.outputStream.schedule(in: .main, forMode: .default)
         
+        //self.inputStream.open() // deprecated
+        //self.outputStream.open() // deprecated
+        
+        print("Establishing connection..!")
+    }
+    
+    func connect() {
         self.inputStream.open()
         self.outputStream.open()
         
-        print("Establishing connection..!")
+        print("Establishing connection...")
+        
+        self.connectionTimer = Timer.scheduledTimer(withTimeInterval: self.connectionTimeout, repeats: false) { _ in
+            if !self.inputStreamReady || !self.outputStreamReady {
+                print("Timeout \(self.connectionTimeout)s exeeded. Connection failed.")
+                if self.connectionCallback != nil {
+                    self.connectionCallback?(false)
+                }
+                self.destroySession()
+            } else {
+                print("Connection established.")
+                if self.connectionCallback != nil {
+                    self.connectionCallback?(true)
+                }
+            }
+             self.connectionTimer?.invalidate()
+             self.connectionTimer = nil
+        }
     }
     
     func send(data:Data) -> Bool {
@@ -124,6 +156,12 @@ class Socket:NSObject {
     func destroySession() {
         inputStream.close()
         outputStream.close()
+        
+        self.inputStreamReady = false
+        self.outputStreamReady = false
+        self.buffer.removeAll(keepingCapacity: false)
+        self.connectionTimer = nil
+        
     }
 }
 
@@ -136,14 +174,16 @@ extension Socket : StreamDelegate {
                 destroySession()
             case .openCompleted:
                 if aStream === inputStream {
-                    print("input: OpenCompleted")
+                    print("inputStream opened.")
+                    self.inputStreamReady = true
                 } else {
-                    print("output: OpenCompleted")
+                    print("outputStream opened.")
+                    self.outputStreamReady = true
                 }
             case .errorOccurred:
-                print("input: ErrorOccurred: \(aStream.streamError!.localizedDescription)")
+                print("inputStream: ErrorOccurred: \(aStream.streamError!.localizedDescription)")
             case .hasSpaceAvailable:
-                print("has space available")
+                print("Stream has space available")
                 if !buffer.isEmpty {
                     send(data: self.buffer.removeFirst())
                 }

@@ -17,11 +17,12 @@ Starting the server is also very simple:
 python main.py
 ```
 
-That's it.
+That's it. Use -p or --port to open the server on another port than the default (which is 8001). 
+
+Now the only thing you have to do is to lookup the IP of your computer to connect your client to the server
 
 ## Client
-The App is included in the ClientApp/ directory.
-The client was tested in XCode Beta 6
+The App is included in the ClientApp/ directory. It is implemented in Swift with SwiftUI. Thus you need iOS 13 or iPadOS 13 to run the App, as well as XCode 11 or above.
 It is currently working best on iPhones. You can just open the project in Xcode and run it.
 
 ## Other platforms and clients

@@ -33,17 +33,18 @@ struct ContentView: View {
                     HStack {
                         TextField("Text", text: $inputText, onEditingChanged: { edit in
                             self.writing = edit
-                        }).textFieldStyle(RoundedBorderTextFieldStyle())
+                        }, onCommit: send).textFieldStyle(RoundedBorderTextFieldStyle())
                         Button(action:send){
                             Text("Send")
                         }
                     }.padding()
                 }.offset(y:(writing ? -300 : 0))
             }
-        .navigationBarTitle(Text("Chat"))
-            .navigationBarItems(leading: Button(action:chat.signOut){
-            Text("Logout")
-        })
+            .navigationBarTitle(Text("Chat"))
+            .navigationBarItems(trailing: Button(action:chat.signOut){
+                Text("Logout")
+            })
+        
         }
     }
     
@@ -56,7 +57,7 @@ struct ContentView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView()
+        ContentView().environmentObject(Chat("192.168.2.111", port: 8001))
     }
 }
 
