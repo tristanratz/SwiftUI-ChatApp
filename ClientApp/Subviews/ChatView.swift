@@ -10,7 +10,7 @@ import SwiftUI
 
 
 
-struct ContentView: View {
+struct ChatView: View {
     @State private var writing:Bool = false
     
     @State private var inputText:String = ""
@@ -57,7 +57,7 @@ struct ContentView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView().environmentObject(Chat("192.168.2.111", port: 8001))
+        ChatView().environmentObject(Chat(delegate:MainController()))
     }
 }
 

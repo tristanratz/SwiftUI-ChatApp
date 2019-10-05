@@ -12,6 +12,7 @@ struct ConnectionView: View {
     @State var ip:String = ""
     @State var port:Int? = 8000
     @State var username:String = ""
+    @State var emptyFields:Bool = false
     
     @EnvironmentObject private var connection:Connection
     
@@ -47,12 +48,15 @@ struct ConnectionView: View {
                             .foregroundColor(Color.white)
                         Spacer()
                     }
-                }.sheet(isPresented: $connection.connected, content: { Modal() })
+                }.sheet(isPresented: $connection.askForName, content: { Modal().environmentObject(self.connection) })
                 .padding(.vertical, 10.0)
                 .background(Color.green)
                 .cornerRadius(5.0)
                 .alert(isPresented: $connection.failed, content: {
-                    Alert(title: Text("Connection error"), message: Text("Failed to connect to server."), dismissButton: .default(Text("Ok")))
+                    Alert(title: Text("Connection error"), message: Text("Failed to connect to server."), dismissButton: .default(Text("OK")))
+                })
+                .alert(isPresented: $emptyFields, content: {
+                    Alert(title: Text("Empty Fields"), message: Text("Please enter IP and Port"), dismissButton: .default(Text("OK")))
                 })
             }
             Spacer()
@@ -61,12 +65,10 @@ struct ConnectionView: View {
     }
     
     func connect() {
-        print(self.port == nil)
-        if self.ip == "" || self.port == nil || self.port == 0 {
-            
+        if self.ip == "" || self.port == nil || self.port == 0 {
+            self.emptyFields = true
             return
         }
-        print("Hello")
         connection.connect(ip: self.ip, port: self.port!)
     }
 }
@@ -77,6 +79,10 @@ struct ConnectionView: View {
  */
 struct Modal : View {
     @State var username:String = ""
+    @State var emptyField:Bool = false
+    
+    @EnvironmentObject var connection:Connection
+    
     var body : some View {
         VStack(alignment: .leading) {
             Text("Choose Name")
@@ -91,7 +97,14 @@ struct Modal : View {
                 .background(Color(red: 239.0/255.0, green: 243.0/255.0, blue: 244.0/255.0, opacity: 0.5))
                 .cornerRadius(5)
                 .padding(.bottom, 20)
-            Button(action: { }) {
+                .disableAutocorrection(true)
+            Button(action: {
+                if self.username == "" {
+                    self.emptyField = true
+                } else {
+                    self.connection.login(name: self.username)
+                }
+            }) {
                 HStack {
                     Spacer()
                     Text("Join as \(self.username)!")
@@ -102,7 +115,10 @@ struct Modal : View {
             }.padding(.vertical, 10.0)
             .background(Color.green)
             .cornerRadius(5.0)
-        }.padding(10)
+            .alert(isPresented: $emptyField, content: {
+                Alert(title: Text("Empty Field"), message: Text("Please enter Name"), dismissButton: .default(Text("OK")))
+            })
+        }.padding(30)
             .padding(.bottom, 80)
     }
 }
@@ -110,6 +126,6 @@ struct Modal : View {
 
 struct SwiftUIView_Previews: PreviewProvider {
     static var previews: some View {
-        ConnectionView().environmentObject(Connection())
+        ConnectionView().environmentObject(Connection(delegate:MainController()))
     }
 }

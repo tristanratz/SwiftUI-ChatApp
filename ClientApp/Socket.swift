@@ -24,8 +24,8 @@ class Socket:NSObject {
     
     private var buffer:[Data] = []
     
-    var dataHandler:((Data,String) -> Void)?
-    var stringHandler:((String,String) -> Void)?
+    var dataHandler:((Data,String) -> Void)? // First argument data, second IP
+    var stringHandler:((String,String) -> Void)? // First argument data, second IP
     
     var connectionCallback:((Bool) -> Void)?
     

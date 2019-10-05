@@ -32,62 +32,43 @@ class Message : Identifiable {
 }
 
 class Chat : ObservableObject {
-        
-    var socket:Socket
+    
+    var delegate:MainController
+    var connection:Connection?
+    
     var chatName:String = ""
     
     var sender:[Sender]
     @Published var messages:[Message] = []
     
-    init(_ ip:String, port:Int) {
+    init(delegate:MainController) {
+        self.delegate = delegate
         sender = [Sender(name:"server", color:.gray)]
-        socket = Socket(ip,port,.utf8)
-        socket.stringHandler = callback
-    }
-    
-    func signIn() {
-        self.chatName = "Mac"
-        socket.sendText(text: chatName)
+        //socket = Socket(ip,port,.utf8)
+        //socket.stringHandler = callback
     }
     
     func signOut() {
-        socket.destroySession()
-        var server:Sender?
-        for s in sender {
-            if s.name == "server" {
-                server = s
-                break
-            }
-        }
-        messages.append(Message(server!, message: "You left the chat"))
+        newMessage(content: "You left the chat.", name: "server")
+        delegate.disconnect()
     }
     
     func sendMessage(message:String) {
         if message == "" {
             return
         }
-        socket.sendText(text: self.chatName+":msg:"+message)
+        connection!.send(message: message)
         newMessage(content: message, name: "You")
     }
     
-    func callback(content:String, ip:String) {
+    func receiveMessage(content:String, ip:String) {
         let m = content.split(separator: ":")
         
         if (m.count != 3) {
             return
         }
         
-        var message = String(m.last!)
-                
-        if String(m.first!) == "server" && message == "name" {
-            signIn()
-            return
-        }
-        
-        if String(m.first!) == "server" && message.contains("Welcome") {
-            
-        }
-
+        let message = String(m.last!)
         
         newMessage(content: message, name: String(m[0]))
     }
@@ -137,5 +118,9 @@ class Chat : ObservableObject {
         sender = Sender(name: name, color: color)
         self.sender.append(sender!)
         messages.append(Message(sender!, message: content))
+    }
+    
+    func clear() {
+        messages.removeAll()
     }
 }
