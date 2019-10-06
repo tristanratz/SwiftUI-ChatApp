@@ -21,7 +21,6 @@ class MainController : ObservableObject {
     }
     
     func connected() {
-        print("CONNECTED")
         chat!.connection = self.connection
         self.connection!.socket!.stringHandler = chat!.receiveMessage
         state = .Chat

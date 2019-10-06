@@ -1,4 +1,4 @@
-#  ClientApp
+#  ClientApp  [![build status](https://secure.travis-ci.org/tristanratz/ChatApp.png)](http://travis-ci.org/tristanratz/ChatApp)
 
 First clone the App to the desired location:
 

@@ -11,7 +11,7 @@ import Combine
 
 class Connection: ObservableObject {
     @Published var askForName:Bool = false
-    @Published var failed:Bool = false
+    @Published var failedToConnect:Bool = false
     
     @Published var userNameRejected:Bool = false
     
@@ -46,7 +46,8 @@ class Connection: ObservableObject {
             self.connected = true
             self.askForName = true
         } else {
-            self.failed = true
+            print("Failed")
+            self.failedToConnect = true
         }
     }
     
@@ -75,5 +76,9 @@ class Connection: ObservableObject {
         self.connected = false
         self.socket!.destroySession()
         self.name = ""
+    }
+    
+    func toggleFailed() {
+        self.failedToConnect.toggle()
     }
 }

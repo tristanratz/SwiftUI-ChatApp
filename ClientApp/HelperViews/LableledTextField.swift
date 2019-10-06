@@ -15,6 +15,7 @@ struct LabeledTextField: View {
     @State var keyboardType:UIKeyboardType = .default
     @State var onCommit:()->Void = {}
     @State var editing:Bool = false
+    @State var disableAutocorrection:Bool = false
     
     var body: some View {
         VStack(alignment:.leading) {
@@ -26,6 +27,7 @@ struct LabeledTextField: View {
                 .padding(.all, 10)
                 .background(Color(red: 239.0/255.0, green: 243.0/255.0, blue: 244.0/255.0, opacity: 0.5))
                 .cornerRadius(5)
+                .disableAutocorrection(disableAutocorrection)
         }
     }
 }
