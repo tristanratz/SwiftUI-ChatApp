@@ -52,7 +52,7 @@ struct ChatView: View {
                     Text("Send")
                 }
             }.padding(.leading, 30).padding(.trailing, 30)
-            Spacer().frame(height: writing ? chat.keyboardHeight : 30)
+            Spacer().frame(height: writing ? (chat.keyboardHeight <= 30 ? 30 : chat.keyboardHeight) : 30)
         }
     }
     
