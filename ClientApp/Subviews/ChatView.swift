@@ -36,11 +36,12 @@ struct ChatView: View {
                         MessageView(message:el.message, sender:el.sender.name, alignment:.trailing, accentColor:el.sender.color, messageColor: Color(red: 221.0/255.0, green: 252.0/255.0, blue: 212.0/255.0, opacity: 0.5))
                     } else if el.sender.name == "server" {
                         MessageView(message:el.message, sender:"", alignment:.center, accentColor:.gray)
+                    }
                     else {
                         MessageView(message:el.message, sender:el.sender.name, accentColor:el.sender.color)
                     }
                 }
-            }.padding(30)
+            }
             ZStack {
                 HStack {
                     LabeledTextField(label:"Text", value:$inputText, showLabel:false, onCommit: send, editing:writing)

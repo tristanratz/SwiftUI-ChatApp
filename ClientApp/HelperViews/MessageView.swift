@@ -30,7 +30,7 @@ struct MessageView: View {
                 }
             }
             HStack {
-                if alignment == .trailing {
+                if alignment == .trailing || alignment == .center {
                     Spacer()
                 }
                 
@@ -38,14 +38,16 @@ struct MessageView: View {
                     Text(message)
                         .padding(.all, 10)
                         .background(messageColor)
+                        .font((alignment == .center) ? .footnote : .body)
                         .cornerRadius(5)
                 }
                 
-                if alignment == .leading {
+                if alignment == .leading || alignment == .center {
                     Spacer()
                 }
             }
-        }
+        }.padding(.leading,30)
+        .padding(.trailing,30)
     }
 }
 
