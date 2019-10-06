@@ -48,7 +48,7 @@ struct ChatView: View {
                     Button(action:send){
                         Text("Send")
                     }
-                }.padding()
+                }.padding(30)
             }.offset(y:(writing ? -300 : 0))
         }
     }

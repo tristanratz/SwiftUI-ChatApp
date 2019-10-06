@@ -20,6 +20,11 @@ class Chat(Protocol):
         if self.name in self.users:
             print(self.name + ' left the chat')
             del self.users[self.name]
+            
+            for name, protocol in self.users.items():
+                if self != protocol:
+                    message = "server:msg:%s left the chat." % self.name
+                    protocol.transport.write(message.encode("utf8"))
         else:
             print('Somebody left the chat')
 
