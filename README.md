@@ -28,12 +28,14 @@ That's it. Use -p or --port to open the server on another port than the default 
 Now the only thing you have to do is to lookup the IP of your computer to connect your client to the server or  if your running in simulator on the same computer you simply can enter "localhost" to connect.
 
 ## Client
+
+The client is compatible with iPhone, iPad and Mac.
+
 ![alt text](https://raw.githubusercontent.com/tristanratz/ChatApp/master/Overview.jpg)
 
-The client is implemented in Swift and the user interface in SwiftUI. Thus you need iOS 13 or iPadOS 13 to run the App, as well as XCode 11 or above.
+The client is implemented in Swift and the user interface in SwiftUI. Thus you need iOS 13, iPadOS 13 or MacOS 10.15 Catalina to run the App, as well as XCode 11 or above.
 
-The App is included in the ClientApp/ directory. To open the client in XCode open the XCode project file (ClientApp.xcodeproj) in the main directory. XCode should open the project. Now you can run it in a simulator or on a private device. Currently it works on iPhone and iPad.
-
+The App is included in the ClientApp/ directory. To open the client in XCode open the XCode project file (ClientApp.xcodeproj) in the main directory. XCode should open the project. Now you can run it in a simulator or on a private device. It is working on iPhone, iPad and Mac.
 
 ## Other platforms and clients
 

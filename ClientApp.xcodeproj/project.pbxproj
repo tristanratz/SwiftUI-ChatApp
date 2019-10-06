@@ -64,6 +64,7 @@
 		E46FA3CD234A0375007AB54D /* Overview.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Overview.jpg; sourceTree = "<group>"; };
 		E46FA3CF234A038B007AB54D /* requirements.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = requirements.txt; sourceTree = "<group>"; };
 		E46FA3D0234A038B007AB54D /* main.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = main.py; sourceTree = "<group>"; };
+		E46FA40F234A0DB8007AB54D /* ClientApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ClientApp.entitlements; sourceTree = "<group>"; };
 		E47B5BCB23339DA800DEB686 /* ClientApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ClientApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E47B5BCE23339DA800DEB686 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E47B5BD023339DA800DEB686 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -173,6 +174,7 @@
 		E47B5BCD23339DA800DEB686 /* ClientApp */ = {
 			isa = PBXGroup;
 			children = (
+				E46FA40F234A0DB8007AB54D /* ClientApp.entitlements */,
 				E45215592348A1AE009F25C9 /* HelperViews */,
 				E45215502346CDE1009F25C9 /* Decoders */,
 				E452154F2346CD91009F25C9 /* Subviews */,
@@ -528,7 +530,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = ClientApp/ClientApp.entitlements;
 				CODE_SIGN_STYLE = Automatic;
+				DERIVE_MACCATALYST_PRODUCT_BUNDLE_IDENTIFIER = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"ClientApp/Preview Content\"";
 				DEVELOPMENT_TEAM = 2A8Y532234;
 				ENABLE_PREVIEWS = YES;
@@ -539,6 +543,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = software.pancake.ClientApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTS_MACCATALYST = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -548,7 +553,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = ClientApp/ClientApp.entitlements;
 				CODE_SIGN_STYLE = Automatic;
+				DERIVE_MACCATALYST_PRODUCT_BUNDLE_IDENTIFIER = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"ClientApp/Preview Content\"";
 				DEVELOPMENT_TEAM = 2A8Y532234;
 				ENABLE_PREVIEWS = YES;
@@ -559,6 +566,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = software.pancake.ClientApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTS_MACCATALYST = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
