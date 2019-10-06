@@ -15,36 +15,40 @@ struct ChatView: View {
     
     @State private var inputText:String = ""
     @EnvironmentObject private var chat:Chat
-    //@State private var messages:[Message] = [Message(Sender(name: "TestSender", color: .green), message: "Hello World! This is a long test messsage, which hopefully will exceed one line")]
     
     var body: some View {
-        NavigationView {
-            VStack {
-                List(self.chat.messages) { el in
-                    HStack {
-                        Text(el.sender.name)
-                            .foregroundColor(el.sender.color)
-                            .padding(4)
-                            .font(.footnote)
-                        Text(el.message)
+        VStack(alignment:.leading) {
+            HStack(alignment:.top) {
+                Text("Chat")
+                    .font(.largeTitle)
+                    .bold()
+                Spacer()
+                Button(action:chat.signOut){
+                    Text("Logout")
+                }.frame(alignment:.trailing)
+            }.padding(.top,30)
+                .padding(.leading,30)
+                .padding(.trailing,30)
+            .padding(.bottom,0)
+            ScrollView {
+                ForEach(self.chat.messages) { el in
+                    if el.sender.name == "You" {
+                        MessageView(message:el.message, sender:el.sender.name, alignment:.trailing, accentColor:el.sender.color, messageColor: Color(red: 221.0/255.0, green: 252.0/255.0, blue: 212.0/255.0, opacity: 0.5))
+                    } else if el.sender.name == "server" {
+                        MessageView(message:el.message, sender:"", alignment:.center, accentColor:.gray)
+                    else {
+                        MessageView(message:el.message, sender:el.sender.name, accentColor:el.sender.color)
                     }
                 }
-                ZStack {
-                    HStack {
-                        TextField("Text", text: $inputText, onEditingChanged: { edit in
-                            self.writing = edit
-                        }, onCommit: send).textFieldStyle(RoundedBorderTextFieldStyle())
-                        Button(action:send){
-                            Text("Send")
-                        }
-                    }.padding()
-                }.offset(y:(writing ? -300 : 0))
-            }
-            .navigationBarTitle(Text("Chat"))
-            .navigationBarItems(trailing: Button(action:chat.signOut){
-                Text("Logout")
-            })
-        
+            }.padding(30)
+            ZStack {
+                HStack {
+                    LabeledTextField(label:"Text", value:$inputText, showLabel:false, onCommit: send, editing:writing)
+                    Button(action:send){
+                        Text("Send")
+                    }
+                }.padding()
+            }.offset(y:(writing ? -300 : 0))
         }
     }
     

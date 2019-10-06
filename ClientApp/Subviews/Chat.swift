@@ -43,7 +43,7 @@ class Chat : ObservableObject {
     
     init(delegate:MainController) {
         self.delegate = delegate
-        sender = [Sender(name:"server", color:.gray)]
+        sender = [Sender(name:"server", color:.gray), Sender(name:"You", color:.green)]
         //socket = Socket(ip,port,.utf8)
         //socket.stringHandler = callback
     }
