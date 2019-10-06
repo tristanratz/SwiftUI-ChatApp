@@ -118,6 +118,10 @@ struct Modal : View {
             .alert(isPresented: $emptyField, content: {
                 Alert(title: Text("Empty Field"), message: Text("Please enter Name"), dismissButton: .default(Text("OK")))
             })
+            .alert(isPresented: $connection.userNameRejected, content: {
+                Alert(title: Text("Name Rejected"), message: Text("The server rejected your name. Please enter onther name."), dismissButton: .default(Text("OK")))
+            })
+
         }.padding(30)
             .padding(.bottom, 80)
     }

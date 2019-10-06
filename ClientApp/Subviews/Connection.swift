@@ -13,6 +13,11 @@ class Connection: ObservableObject {
     @Published var askForName:Bool = false
     @Published var failed:Bool = false
     
+    @Published var userNameRejected:Bool = false
+    
+    @Published var emptyFields:Bool = false
+    @Published var emptyNameField:Bool = false
+    
     var connected:Bool = false
     var name:String
     
@@ -47,7 +52,6 @@ class Connection: ObservableObject {
     
     func login(name:String) {
         self.name = name
-        self.askForName = false
         socket!.stringHandler = loginCallback
         socket!.sendText(text: name)
     }
@@ -55,9 +59,11 @@ class Connection: ObservableObject {
     func loginCallback(reply:String, ip:String) {
         print("Logincallback: ",reply)
         if reply == "server:msg:Welcome, \(self.name)!" {
+            self.askForName = false
             delegate.connected()
         } else if reply == "server:inf:name" {
             self.askForName = true
+            self.userNameRejected = true
         }
     }
     

@@ -1,5 +1,6 @@
 from twisted.internet.protocol import Factory,Protocol
 from twisted.internet import reactor
+import argparse
 
 class Chat(Protocol):
 
@@ -30,10 +31,19 @@ class Chat(Protocol):
             self.handle_chat(line.decode())
 
     def handle_get_name(self, name):
-        if name in self.users:
-            print("Username already taken (%s)" % name)
+        if name.upper() == "SERVER" or name.upper() == "YOU":
+            print("Not allowed username (%s)" % name)
             self.transport.write("server:inf:name".encode("utf8"))
             return
+        for peerName, protocol in self.users.items():
+            if name.upper() == peerName.upper():
+                print("Username already taken (%s)" % name)
+                self.transport.write("server:inf:name".encode("utf8"))
+                return
+        #if name in self.users:
+            #print("Username already taken (%s)" % name)
+            #self.transport.write("server:inf:name".encode("utf8"))
+            #return
         print("New user signed up (%s)" % name)
         self.transport.write(("server:msg:Welcome, %s!" % (name)).encode("utf8"))
         self.name = name
@@ -64,7 +74,11 @@ class ChatFactory(Factory):
         return Chat(self.users)
 
 def main():
-    reactor.listenTCP(8000, ChatFactory())
+    ap = argparse.ArgumentParser()
+    ap.add_argument("-p", "--port", default=8000, type=int,
+    help="Port to open server to")
+    args = vars(ap.parse_args())
+    reactor.listenTCP(args["port"], ChatFactory())
     reactor.run()
 
 
