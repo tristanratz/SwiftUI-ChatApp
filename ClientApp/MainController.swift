@@ -6,7 +6,8 @@
 //  Copyright © 2019 Tristan Ratz. All rights reserved.
 //
 
-import Foundation
+import Combine
+import SwiftUI
 
 class MainController : ObservableObject {
     
@@ -23,7 +24,9 @@ class MainController : ObservableObject {
     func connected() {
         chat!.connection = self.connection
         self.connection!.socket!.stringHandler = chat!.receiveMessage
-        state = .Chat
+        withAnimation {
+            state = .Chat
+        }
     }
     
     func disconnect() {

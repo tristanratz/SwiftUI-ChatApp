@@ -1,10 +1,16 @@
 #  ClientApp  [![build status](https://secure.travis-ci.org/tristanratz/ChatApp.png)](http://travis-ci.org/tristanratz/ChatApp)
 
-First clone the App to the desired location:
+To use the app first clone the project to the desired location:
 
 ```
 git clone https://github.com/tristanratz/ChatApp.git
 ```
+
+## Highlights
+- Works on iOS, iPadOS and macOS (support for project catalyst)
+- UI completely build in SwiftUI
+- Python Server included. Build with Twisted
+- Client socket class with events (connected, newMessage...)
 
 ## Server
 

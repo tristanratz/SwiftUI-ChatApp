@@ -13,6 +13,7 @@ struct ConnectionView: View {
     @State var port:String = ""
     @State var username:String = ""
     @State var emptyFields:Bool = false
+    @State var writing:Bool = false
     
     @EnvironmentObject private var connection:Connection
     
@@ -24,8 +25,16 @@ struct ConnectionView: View {
                 .padding(.bottom, 50)
                 .padding(.top, 50)
             VStack(alignment:.leading) {
-                LabeledTextField(label: "IP Adress", value: $ip, keyboardType: .numbersAndPunctuation, disableAutocorrection: true)
-                LabeledTextField(label: "Port", value: $port, keyboardType: .numberPad, disableAutocorrection: true)
+                LabeledTextField(label: "IP Adress", value: $ip, keyboardType: .numbersAndPunctuation, onEditingChanged: { editing in
+                    withAnimation {
+                        self.writing = editing
+                    }
+                }, disableAutocorrection: true)
+                LabeledTextField(label: "Port", value: $port, keyboardType: .numberPad, onEditingChanged: { editing in
+                    withAnimation {
+                        self.writing = editing
+                    }
+                }, disableAutocorrection: true)
                     .padding(.bottom,20)
                     .alert(isPresented: $emptyFields, content: {
                         Alert(title: Text("Empty Fields"), message: Text("Please enter IP and Port"), dismissButton: .default(Text("OK")))
@@ -47,7 +56,7 @@ struct ConnectionView: View {
                     Alert(title: Text("Connection error"), message: Text("Failed to connect to server."), dismissButton: .default(Text("OK")))
                 })
             }
-            Spacer()
+            Spacer().frame(height: writing ? (connection.keyboardHeight <= 30 ? 30 :  connection.keyboardHeight) : 30)
         }.padding(30)
             //.sheet(isPresented: Binding(get:{self.connection.connected}, set:{(newValue) in self.connection.connected=newValue}), content: Modal())
     }
@@ -75,6 +84,8 @@ struct Modal : View {
     @State var username:String = ""
     @State var emptyField:Bool = false
     
+    @State var writing:Bool = false
+    
     @EnvironmentObject var connection:Connection
     
     var body : some View {
@@ -83,7 +94,11 @@ struct Modal : View {
                 .font(.largeTitle)
                 .bold()
                 .multilineTextAlignment(.trailing)
-            LabeledTextField(label: "Username", value: $username, onCommit: self.connect, disableAutocorrection:true).padding(.bottom,10)
+            LabeledTextField(label: "Username", value: $username, onCommit: self.connect, onEditingChanged: {editing in
+                withAnimation {
+                    self.writing=editing
+                }
+            }, disableAutocorrection:true).padding(.bottom,10)
             .alert(isPresented: $emptyField, content: {
                 Alert(title: Text("Empty Field"), message: Text("Please enter Name"), dismissButton: .default(Text("OK")))
             })
@@ -101,9 +116,8 @@ struct Modal : View {
             .alert(isPresented: $connection.userNameRejected, content: {
                 Alert(title: Text("Name Rejected"), message: Text("The server rejected your name. Please enter onther name."), dismissButton: .default(Text("OK")))
             })
-
+            Spacer().frame(height: writing ? (connection.keyboardHeight <= 30 ? 30 :  connection.keyboardHeight) : 30)
         }.padding(30)
-            .padding(.bottom, 80)
     }
     
     func connect() {

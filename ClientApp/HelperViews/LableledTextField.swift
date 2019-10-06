@@ -14,7 +14,8 @@ struct LabeledTextField: View {
     @State var showLabel:Bool = true
     @State var keyboardType:UIKeyboardType = .default
     @State var onCommit:()->Void = {}
-    @State var editing:Bool = false
+    @State private var editing:Bool = false
+    var onEditingChanged:(Bool)->Void = {_ in}
     @State var disableAutocorrection:Bool = false
     
     var body: some View {
@@ -22,7 +23,7 @@ struct LabeledTextField: View {
             if showLabel {
                 Text(label).bold().padding(.top, 20)
             }
-            TextField(label, text: $value, onEditingChanged: {e in self.editing = e}, onCommit: onCommit)
+            TextField(label, text: $value, onEditingChanged: onEditingChanged, onCommit: onCommit)
                 .keyboardType(keyboardType)
                 .padding(.all, 10)
                 .background(Color(red: 239.0/255.0, green: 243.0/255.0, blue: 244.0/255.0, opacity: 0.5))

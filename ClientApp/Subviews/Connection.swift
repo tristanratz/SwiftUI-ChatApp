@@ -24,9 +24,18 @@ class Connection: ObservableObject {
     var delegate:MainController
     var socket:Socket?
     
+    @Published var keyboardHeight:CGFloat = 0
+    
     init(delegate:MainController) {
         self.delegate = delegate
         self.name = ""
+        
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(keyboardWillShow),
+            name: UIResponder.keyboardWillShowNotification,
+            object: nil
+        )
     }
     
     func connect(ip:String, port:Int) {
@@ -80,5 +89,12 @@ class Connection: ObservableObject {
     
     func toggleFailed() {
         self.failedToConnect.toggle()
+    }
+    
+    @objc func keyboardWillShow(_ notification: Notification) {
+        if let keyboardFrame: NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
+            let keyboardRectangle = keyboardFrame.cgRectValue
+            keyboardHeight = keyboardRectangle.height
+        }
     }
 }

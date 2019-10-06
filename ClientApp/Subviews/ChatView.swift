@@ -20,7 +20,7 @@ struct ChatView: View {
         VStack(alignment:.leading) {
             HStack(alignment:.top) {
                 Text("Chat")
-                    .font(.largeTitle)
+                    .font(.title)
                     .bold()
                 Spacer()
                 Button(action:chat.signOut){
@@ -41,15 +41,18 @@ struct ChatView: View {
                         MessageView(message:el.message, sender:el.sender.name, accentColor:el.sender.color)
                     }
                 }
-            }
-            ZStack {
-                HStack {
-                    LabeledTextField(label:"Text", value:$inputText, showLabel:false, onCommit: send, editing:writing)
-                    Button(action:send){
-                        Text("Send")
+            } //.content.offset(y:self.chat.messages.count*20)
+            HStack {
+                LabeledTextField(label:"Text", value:$inputText, showLabel:false, onCommit: send, onEditingChanged:{editing in
+                    withAnimation {
+                        self.writing=editing
                     }
-                }.padding(30)
-            }.offset(y:(writing ? -300 : 0))
+                })
+                Button(action:send){
+                    Text("Send")
+                }
+            }.padding(.leading, 30).padding(.trailing, 30)
+            Spacer().frame(height: writing ? chat.keyboardHeight : 30)
         }
     }
     

@@ -40,12 +40,18 @@ class Chat : ObservableObject {
     
     var sender:[Sender]
     @Published var messages:[Message] = []
+    @Published var keyboardHeight:CGFloat = 0
     
     init(delegate:MainController) {
         self.delegate = delegate
         sender = [Sender(name:"server", color:.gray), Sender(name:"You", color:.green)]
-        //socket = Socket(ip,port,.utf8)
-        //socket.stringHandler = callback
+        
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(keyboardWillShow),
+            name: UIResponder.keyboardWillShowNotification,
+            object: nil
+        )
     }
     
     func signOut() {
@@ -122,5 +128,12 @@ class Chat : ObservableObject {
     
     func clear() {
         messages.removeAll()
+    }
+    
+    @objc func keyboardWillShow(_ notification: Notification) {
+        if let keyboardFrame: NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
+            let keyboardRectangle = keyboardFrame.cgRectValue
+            keyboardHeight = keyboardRectangle.height
+        }
     }
 }
