@@ -10,41 +10,43 @@ import Combine
 import SwiftUI
 
 class Sender {
-    let name:String
-    let color:Color
-    
-    init(name:String,color:Color) {
+
+    let name: String
+    let color: Color
+
+    init(name: String, color: Color) {
         self.name = name
         self.color = color
     }
 }
 
-class Message : Identifiable {
+class Message: Identifiable {
+
     let id = UUID()
-    let sender:Sender
-    var message:String
-    
-    init(_ sender:Sender, message:String) {
+    let sender: Sender
+    var message: String
+
+    init(_ sender: Sender, message:String) {
         self.sender = sender
         self.message = message
 
     }
 }
 
-class Chat : ObservableObject {
-    
-    var delegate:MainController
-    var connection:Connection?
-    
-    var chatName:String = ""
-    
-    var sender:[Sender]
-    @Published var messages:[Message] = []
-    @Published var keyboardHeight:CGFloat = 0
-    
-    init(delegate:MainController) {
+class Chat: ObservableObject {
+
+    var delegate: MainController
+    var connection: Connection?
+
+    var chatName: String = ""
+
+    var sender: [Sender]
+    @Published var messages: [Message] = []
+    @Published var keyboardHeight: CGFloat = 0
+
+    init(delegate: MainController) {
         self.delegate = delegate
-        sender = [Sender(name:"server", color:.gray), Sender(name:"You", color:.green)]
+        sender = [Sender(name: "server", color: .gray), Sender(name: "You", color: .green)]
         
         NotificationCenter.default.addObserver(
             self,
@@ -53,37 +55,37 @@ class Chat : ObservableObject {
             object: nil
         )
     }
-    
+
     func signOut() {
         newMessage(content: "You left the chat.", name: "server")
         delegate.disconnect()
     }
-    
-    func sendMessage(message:String) {
+
+    func sendMessage(message: String) {
         if message == "" {
             return
         }
         connection!.send(message: message)
         newMessage(content: message, name: "You")
     }
-    
-    func receiveMessage(content:String, ip:String) {
-        let m = content.split(separator: ":")
+
+    func receiveMessage(content: String, ip: String) {
+        let messageParts = content.split(separator: ":")
         
-        if (m.count != 3) {
+        if messageParts.count != 3 {
             return
         }
         
-        let message = String(m.last!)
+        let message = String(messageParts.last!)
         
-        newMessage(content: message, name: String(m[0]))
+        newMessage(content: message, name: String(messageParts[0]))
     }
-    
-    func newMessage(content:String, name:String) {
-        var sender:Sender?
-        for s in self.sender {
-            if s.name == name {
-                sender = s
+
+    func newMessage(content: String, name: String) {
+        var sender: Sender?
+        for possibleSender in self.sender {
+            if possibleSender.name == name {
+                sender = possibleSender
                 break
             }
         }
@@ -125,11 +127,11 @@ class Chat : ObservableObject {
         self.sender.append(sender!)
         messages.append(Message(sender!, message: content))
     }
-    
+
     func clear() {
         messages.removeAll()
     }
-    
+
     @objc func keyboardWillShow(_ notification: Notification) {
         if let keyboardFrame: NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
             let keyboardRectangle = keyboardFrame.cgRectValue

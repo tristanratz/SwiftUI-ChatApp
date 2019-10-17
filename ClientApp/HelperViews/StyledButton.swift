@@ -13,7 +13,7 @@ struct StyledButton: View {
 //    @State private var text:String = "Ok"
 //    private var action:() -> Void
 //    private var 
-    
+
     var body: some View {
         Text(/*@START_MENU_TOKEN@*/"Hello World!"/*@END_MENU_TOKEN@*/)
     }

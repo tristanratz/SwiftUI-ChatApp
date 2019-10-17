@@ -10,29 +10,29 @@ import Combine
 import SwiftUI
 
 class MainController : ObservableObject {
-    
-    @Published var state:SubviewState = .Login
-    
-    var chat:Chat?
-    var connection:Connection?
-    
+
+    @Published var state: SubviewState = .login
+
+    var chat: Chat?
+    var connection: Connection?
+
     init() {
-        chat = Chat(delegate:self)
-        connection = Connection(delegate:self)
+        chat = Chat(delegate: self)
+        connection = Connection(delegate: self)
     }
-    
+
     func connected() {
         chat!.connection = self.connection
         self.connection!.socket!.stringHandler = chat!.receiveMessage
         withAnimation {
-            state = .Chat
+            state = .chat
         }
     }
-    
+
     func disconnect() {
         chat!.clear()
         connection!.disconnect()
-        state = .Login
+        state = .login
     }
-    
+
 }

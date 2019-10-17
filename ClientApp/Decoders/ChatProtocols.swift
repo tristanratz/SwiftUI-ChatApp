@@ -9,6 +9,6 @@
 import Foundation
 
 protocol ChatProtocols {
-    func decode(dictionary:Dictionary<String,String>)
-    func encode(dictionary:Dictionary<String,String>)
+    func decode(dictionary: Dictionary<String, String>)
+    func encode(dictionary: Dictionary<String, String>)
 }

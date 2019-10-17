@@ -8,32 +8,39 @@
 
 import SwiftUI
 
-
-
 struct ChatView: View {
     @State private var writing:Bool = false
-    
+
     @State private var inputText:String = ""
     @EnvironmentObject private var chat:Chat
-    
+
     var body: some View {
-        VStack(alignment:.leading) {
-            HStack(alignment:.top) {
+        VStack(alignment: .leading) {
+            HStack(alignment: .top) {
                 Text("Chat")
                     .font(.title)
                     .bold()
                 Spacer()
-                Button(action:chat.signOut){
+                Button(action: chat.signOut) {
                     Text("Logout")
-                }.frame(alignment:.trailing)
-            }.padding(.top,30)
-                .padding(.leading,30)
-                .padding(.trailing,30)
-            .padding(.bottom,0)
+                }.frame(alignment: .trailing)
+            }.padding(.top, 30)
+                .padding(.leading, 30)
+                .padding(.trailing, 30)
+            .padding(.bottom, 0)
             ScrollView {
-                ForEach(self.chat.messages) { el in
+                ForEach (self.chat.messages) { el in
                     if el.sender.name == "You" {
-                        MessageView(message:el.message, sender:el.sender.name, alignment:.trailing, accentColor:el.sender.color, messageColor: Color(red: 221.0/255.0, green: 252.0/255.0, blue: 212.0/255.0, opacity: 0.5))
+                        MessageView(message:el.message,
+                                    sender:el.sender.name,
+                                    alignment:.trailing,
+                                    accentColor:el.sender.color,
+                                    messageColor:
+                                        Color(red: 221.0/255.0,
+                                              green: 252.0/255.0,
+                                              blue: 212.0/255.0,
+                                              opacity: 0.5)
+                        )
                     } else if el.sender.name == "server" {
                         MessageView(message:el.message, sender:"", alignment:.center, accentColor:.gray)
                     }
@@ -43,12 +50,17 @@ struct ChatView: View {
                 }
             } //.content.offset(y:self.chat.messages.count*20)
             HStack {
-                LabeledTextField(label:"Text", value:$inputText, showLabel:false, onCommit: send, onEditingChanged:{editing in
-                    withAnimation {
-                        self.writing=editing
+                LabeledTextField(label: "Text",
+                                 value: $inputText,
+                                 showLabel: false,
+                                 onCommit: send,
+                                 onEditingChanged: { editing in
+                                    withAnimation {
+                                        self.writing=editing
+                                    }
                     }
-                })
-                Button(action:send){
+                )
+                Button(action: send) {
                     Text("Send")
                 }
             }.padding(.leading, 30).padding(.trailing, 30)
@@ -70,12 +82,12 @@ struct ContentView_Previews: PreviewProvider {
 }
 
 class StringID : Identifiable {
-    
+
     var id = UUID()
     var string:String
-    
+
     init(_ string:String) {
         self.string = string
     }
-    
+
 }

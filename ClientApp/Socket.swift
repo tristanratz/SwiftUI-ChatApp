@@ -8,28 +8,28 @@
 
 import Foundation
 
-class Socket:NSObject {
-    let port:Int
-    let ip:String
-    let textEncoding:String.Encoding
-    
-    let connectionTimeout:Double
-    var connectionTimer:Timer?
-    var inputStreamReady:Bool = false
-    var outputStreamReady:Bool = false
-    
+class Socket:NSObject, StreamDelegate {
+    let port: Int
+    let ip: String
+    let textEncoding: String.Encoding
+
+    let connectionTimeout: Double
+    var connectionTimer: Timer?
+    var inputStreamReady: Bool = false
+    var outputStreamReady: Bool = false
+
     private var inputStream: InputStream!
     private var outputStream: OutputStream!
     private let maxReadLength = 4096
-    
-    private var buffer:[Data] = []
-    
-    var dataHandler:((Data,String) -> Void)? // First argument data, second IP
-    var stringHandler:((String,String) -> Void)? // First argument data, second IP
-    
-    var connectionCallback:((Bool) -> Void)?
-    
-    init(_ ip:String, _ port:Int, _ textEncoding:String.Encoding) {
+
+    private var buffer: [Data] = []
+
+    var dataHandler: ((Data, String) -> Void)? // First argument data, second IP
+    var stringHandler: ((String, String) -> Void)? // First argument data, second IP
+
+    var connectionCallback: ((Bool) -> Void)?
+
+    init(_ ip: String, _ port: Int, _ textEncoding: String.Encoding) {
         self.port = port
         self.ip = ip
         self.textEncoding = textEncoding
@@ -57,7 +57,7 @@ class Socket:NSObject {
         
         print("Establishing connection..!")
     }
-    
+
     func connect() {
         self.inputStream.open()
         self.outputStream.open()
@@ -81,8 +81,8 @@ class Socket:NSObject {
              self.connectionTimer = nil
         }
     }
-    
-    func send(data:Data) -> Bool {
+
+    func send(data: Data) -> Bool {
         if !outputStream.hasSpaceAvailable {
             print("Loading up buffer...")
             buffer.append(data)
@@ -102,8 +102,8 @@ class Socket:NSObject {
         }
         return true
     }
-    
-    func sendText(text:String) -> Bool {
+
+    func sendText(text: String) -> Bool {
         self.send(data: (text).data(using: textEncoding)!)
     }
     
@@ -130,7 +130,7 @@ class Socket:NSObject {
         }
       }
     }
-    
+
     private func processedMessageString(buffer: UnsafeMutablePointer<UInt8>,
                                         length: Int) -> (Data, String)? {
         guard
@@ -144,15 +144,15 @@ class Socket:NSObject {
             }
         
         var bytes:[UInt8] = []
-        for i in 0..<length {
-            bytes.append(buffer[i])
+        for iterate in 0 ..< length {
+            bytes.append(buffer[iterate])
         }
         // Convert to NSData
         let data = NSData(bytes: bytes, length: bytes.count)
       
         return (Data(data),string)
     }
-    
+
     func destroySession() {
         inputStream.close()
         outputStream.close()
@@ -163,9 +163,7 @@ class Socket:NSObject {
         self.connectionTimer = nil
         
     }
-}
 
-extension Socket : StreamDelegate {
     func stream(_ aStream: Stream, handle eventCode: Stream.Event) {
         switch eventCode {
             case .hasBytesAvailable:

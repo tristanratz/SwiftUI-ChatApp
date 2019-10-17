@@ -9,17 +9,18 @@
 import SwiftUI
 
 struct LabeledTextField: View {
-    @State var label:String
-    @Binding var value:String
-    @State var showLabel:Bool = true
-    @State var keyboardType:UIKeyboardType = .default
-    @State var onCommit:()->Void = {}
-    @State private var editing:Bool = false
-    var onEditingChanged:(Bool)->Void = {_ in}
-    @State var disableAutocorrection:Bool = false
-    
+    @State var label: String
+    @Binding var value: String
+    @State var showLabel: Bool = true
+    @State var keyboardType: UIKeyboardType = .default
+    @State var onCommit: () -> Void = {}
+    @State private var editing: Bool = false
+
+    var onEditingChanged: (Bool) -> Void = { _ in }
+    @State var disableAutocorrection: Bool = false
+
     var body: some View {
-        VStack(alignment:.leading) {
+        VStack(alignment: .leading) {
             if showLabel {
                 Text(label).bold().padding(.top, 20)
             }

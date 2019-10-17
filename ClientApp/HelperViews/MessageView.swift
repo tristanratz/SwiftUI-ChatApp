@@ -9,12 +9,12 @@
 import SwiftUI
 
 struct MessageView: View {
-    @State var message:String
-    @State var sender:String
-    var alignment:HorizontalAlignment = .leading
-    @State var accentColor:Color = .gray
-    @State var messageColor:Color = Color(red: 239.0/255.0, green: 243.0/255.0, blue: 244.0/255.0, opacity: 0.7)
-    
+    @State var message: String
+    @State var sender: String
+    var alignment: HorizontalAlignment = .leading
+    @State var accentColor: Color = .gray
+    @State var messageColor: Color = Color(red: 239.0/255.0, green: 243.0/255.0, blue: 244.0/255.0, opacity: 0.7)
+
     var body: some View {
         VStack(alignment: self.alignment) {
             HStack {
@@ -46,8 +46,8 @@ struct MessageView: View {
                     Spacer()
                 }
             }
-        }.padding(.leading,30)
-        .padding(.trailing,30)
+        }.padding(.leading, 30)
+        .padding(.trailing, 30)
     }
 }
 

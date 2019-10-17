@@ -9,12 +9,12 @@
 import SwiftUI
 
 struct MainView: View {
-    
-    @EnvironmentObject var mainController:MainController
-    
+
+    @EnvironmentObject var mainController: MainController
+
     var body: some View {
         VStack(alignment: .leading) {
-            if mainController.state == .Login {
+            if mainController.state == .login {
                 ConnectionView().environmentObject(mainController.connection!)
             } else {
                 ChatView().environmentObject(mainController.chat!)
@@ -30,6 +30,6 @@ struct MotherView_Previews: PreviewProvider {
 }
 
 enum SubviewState {
-    case Login
-    case Chat
+    case login
+    case chat
 }
