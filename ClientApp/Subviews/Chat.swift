@@ -26,7 +26,7 @@ class Message: Identifiable {
     let sender: Sender
     var message: String
 
-    init(_ sender: Sender, message:String) {
+    init(_ sender: Sender, message: String) {
         self.sender = sender
         self.message = message
 
@@ -35,7 +35,7 @@ class Message: Identifiable {
 
 class Chat: ObservableObject {
 
-    var delegate: MainController
+    var controller: MainController
     var connection: Connection?
 
     var chatName: String = ""
@@ -45,9 +45,9 @@ class Chat: ObservableObject {
     @Published var keyboardHeight: CGFloat = 0
 
     init(delegate: MainController) {
-        self.delegate = delegate
+        self.controller = delegate
         sender = [Sender(name: "server", color: .gray), Sender(name: "You", color: .green)]
-        
+
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(keyboardWillShow),
@@ -58,7 +58,7 @@ class Chat: ObservableObject {
 
     func signOut() {
         newMessage(content: "You left the chat.", name: "server")
-        delegate.disconnect()
+        controller.disconnect()
     }
 
     func sendMessage(message: String) {
@@ -82,25 +82,18 @@ class Chat: ObservableObject {
     }
 
     func newMessage(content: String, name: String) {
-        var sender: Sender?
         for possibleSender in self.sender {
             if possibleSender.name == name {
-                sender = possibleSender
-                break
+                print("Already known sender: ", name)
+                messages.append(Message(possibleSender, message: content))
+                return
             }
         }
         
-        if sender != nil {
-            print("Already known sender: ", name)
-            messages.append(Message(sender!, message: content))
-            return
-        }
-        
-        
         print("Not known sender: ", name)
         
-        let color:Color
-        switch Int.random(in:0...5) {
+        let color: Color
+        switch Int.random(in: 0...5) {
         case 0:
             color = Color.green
             break
@@ -118,14 +111,13 @@ class Chat: ObservableObject {
             break
         case 5:
             color = Color.orange
-            break
         default:
             color = Color.white
         }
-        
-        sender = Sender(name: name, color: color)
-        self.sender.append(sender!)
-        messages.append(Message(sender!, message: content))
+
+        let sender = Sender(name: name, color: color)
+        self.sender.append(sender)
+        messages.append(Message(sender, message: content))
     }
 
     func clear() {

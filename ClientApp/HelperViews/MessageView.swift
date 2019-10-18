@@ -53,6 +53,6 @@ struct MessageView: View {
 
 struct MessageView_Previews: PreviewProvider {
     static var previews: some View {
-        MessageView(message:"Hello", sender:"Me")
+        MessageView(message: "Hello", sender: "Me")
     }
 }

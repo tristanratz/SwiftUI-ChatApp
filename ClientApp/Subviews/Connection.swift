@@ -22,13 +22,13 @@ class Connection: ObservableObject {
     var connected: Bool = false
     var name: String
 
-    var delegate: MainController
+    var controller: MainController
     var socket: Socket?
 
     @Published var keyboardHeight: CGFloat = 0
 
     init(delegate: MainController) {
-        self.delegate = delegate
+        self.controller = delegate
         self.name = ""
         
         NotificationCenter.default.addObserver(
@@ -71,7 +71,7 @@ class Connection: ObservableObject {
         print("Logincallback: ", reply)
         if reply == "server:msg:Welcome, \(self.name)!" {
             self.askForName = false
-            delegate.connected()
+            controller.connected()
         } else if reply == "server:inf:name" {
             self.askForName = true
             self.userNameRejected = true

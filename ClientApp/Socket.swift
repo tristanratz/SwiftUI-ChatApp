@@ -8,9 +8,9 @@
 
 import Foundation
 
-class Socket:NSObject, StreamDelegate {
+class Socket: NSObject, StreamDelegate {
     let port: Int
-    let ip: String
+    let ipAddress: String
     let textEncoding: String.Encoding
 
     let connectionTimeout: Double
@@ -29,9 +29,9 @@ class Socket:NSObject, StreamDelegate {
 
     var connectionCallback: ((Bool) -> Void)?
 
-    init(_ ip: String, _ port: Int, _ textEncoding: String.Encoding) {
+    init(_ ipAddress: String, _ port: Int, _ textEncoding: String.Encoding) {
         self.port = port
-        self.ip = ip
+        self.ipAddress = ipAddress
         self.textEncoding = textEncoding
         self.connectionTimeout = 1.0
         
@@ -40,7 +40,7 @@ class Socket:NSObject, StreamDelegate {
         var readStream: Unmanaged<CFReadStream>?
         var writeStream: Unmanaged<CFWriteStream>?
         
-        CFStreamCreatePairWithSocketToHost(kCFAllocatorDefault, ip as CFString, UInt32(port),
+        CFStreamCreatePairWithSocketToHost(kCFAllocatorDefault, ipAddress as CFString, UInt32(port),
                                            &readStream, &writeStream)
         
         self.inputStream = readStream!.takeRetainedValue()
@@ -122,10 +122,10 @@ class Socket:NSObject, StreamDelegate {
             processedMessageString(buffer: buffer, length: numberOfBytesRead) {
             print (string)
             if self.dataHandler != nil {
-                self.dataHandler!(data, self.ip)
+                self.dataHandler!(data, self.ipAddress)
             }
             if self.stringHandler != nil {
-                self.stringHandler!(string, self.ip)
+                self.stringHandler!(string, self.ipAddress)
             }
         }
       }
@@ -143,14 +143,14 @@ class Socket:NSObject, StreamDelegate {
                 return nil
             }
         
-        var bytes:[UInt8] = []
+        var bytes: [UInt8] = []
         for iterate in 0 ..< length {
             bytes.append(buffer[iterate])
         }
         // Convert to NSData
         let data = NSData(bytes: bytes, length: bytes.count)
       
-        return (Data(data),string)
+        return (Data(data), string)
     }
 
     func destroySession() {
@@ -161,32 +161,31 @@ class Socket:NSObject, StreamDelegate {
         self.outputStreamReady = false
         self.buffer.removeAll(keepingCapacity: false)
         self.connectionTimer = nil
-        
     }
 
     func stream(_ aStream: Stream, handle eventCode: Stream.Event) {
         switch eventCode {
-            case .hasBytesAvailable:
-                readAvailableBytes(stream: aStream as! InputStream)
-            case .endEncountered:
-                destroySession()
-            case .openCompleted:
-                if aStream === inputStream {
-                    print("inputStream opened.")
-                    self.inputStreamReady = true
-                } else {
-                    print("outputStream opened.")
-                    self.outputStreamReady = true
-                }
-            case .errorOccurred:
-                print("inputStream: ErrorOccurred: \(aStream.streamError!.localizedDescription)")
-            case .hasSpaceAvailable:
-                print("Stream has space available")
-                if !buffer.isEmpty {
-                    send(data: self.buffer.removeFirst())
-                }
-            default:
-                print("some other event...")
+        case .hasBytesAvailable:
+            readAvailableBytes(stream: aStream as! InputStream)
+        case .endEncountered:
+            destroySession()
+        case .openCompleted:
+            if aStream === inputStream {
+                print("inputStream opened.")
+                self.inputStreamReady = true
+            } else {
+                print("outputStream opened.")
+                self.outputStreamReady = true
+            }
+        case .errorOccurred:
+            print("inputStream: ErrorOccurred: \(aStream.streamError!.localizedDescription)")
+        case .hasSpaceAvailable:
+            print("Stream has space available")
+            if !buffer.isEmpty {
+                send(data: self.buffer.removeFirst())
+            }
+        default:
+            print("some other event...")
         }
     }
 }

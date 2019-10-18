@@ -20,7 +20,7 @@ class Chat(Protocol):
         if self.name in self.users:
             print(self.name + ' left the chat')
             del self.users[self.name]
-            
+
             for name, protocol in self.users.items():
                 if self != protocol:
                     message = "server:msg:%s left the chat." % self.name
@@ -65,7 +65,7 @@ class Chat(Protocol):
         if m[0] != self.name:
             return
         message = "%s:msg:%s" % (self.name, m[2])
-        for name, protocol in self.users.items():
+        for protocol in self.users.values():
             if self != protocol:
                 protocol.transport.write(message.encode("utf8"))
 

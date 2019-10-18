@@ -9,7 +9,7 @@
 import SwiftUI
 
 struct ConnectionView: View {
-    @State var ip: String = ""
+    @State var ipAddress: String = ""
     @State var port: String = ""
     @State var username: String = ""
     @State var emptyFields: Bool = false
@@ -26,7 +26,7 @@ struct ConnectionView: View {
                 .padding(.top, 50)
             VStack(alignment:.leading) {
                 LabeledTextField(label: "IP Adress",
-                                 value: $ip,
+                                 value: $ipAddress,
                                  keyboardType: .numbersAndPunctuation,
                                  onEditingChanged: { editing in
                                     withAnimation {
@@ -42,7 +42,7 @@ struct ConnectionView: View {
                                         self.writing = editing
                                     }
                     }, disableAutocorrection: true
-                ).padding(.bottom,20)
+                ).padding(.bottom, 20)
                     .alert(isPresented: $emptyFields, content: {
                         Alert(title: Text("Empty Fields"),
                               message: Text("Please enter IP and Port"),
@@ -76,7 +76,7 @@ struct ConnectionView: View {
     }
 
     func connect() {
-        if self.ip == "" || self.port == "" {
+        if self.ipAddress == "" || self.port == "" {
             self.emptyFields = true
             return
         }
@@ -86,7 +86,7 @@ struct ConnectionView: View {
             return
         }
         
-        connection.connect(ip: self.ip, port: Int(self.port)!)
+        connection.connect(ip: self.ipAddress, port: Int(self.port)!)
     }
 }
 
@@ -103,7 +103,7 @@ struct Modal: View {
 
     @EnvironmentObject var connection: Connection
 
-    var body : some View {
+    var body: some View {
         VStack(alignment: .leading) {
             Text("Choose Name")
                 .font(.largeTitle)
@@ -153,7 +153,6 @@ struct Modal: View {
         }
     }
 }
-
 
 struct SwiftUIView_Previews: PreviewProvider {
     static var previews: some View {

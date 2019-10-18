@@ -9,10 +9,10 @@
 import SwiftUI
 
 struct ChatView: View {
-    @State private var writing:Bool = false
+    @State private var writing: Bool = false
 
-    @State private var inputText:String = ""
-    @EnvironmentObject private var chat:Chat
+    @State private var inputText: String = ""
+    @EnvironmentObject private var chat: Chat
 
     var body: some View {
         VStack(alignment: .leading) {
@@ -43,8 +43,7 @@ struct ChatView: View {
                         )
                     } else if el.sender.name == "server" {
                         MessageView(message:el.message, sender:"", alignment:.center, accentColor:.gray)
-                    }
-                    else {
+                    } else {
                         MessageView(message:el.message, sender:el.sender.name, accentColor:el.sender.color)
                     }
                 }
@@ -67,7 +66,7 @@ struct ChatView: View {
             Spacer().frame(height: writing ? (chat.keyboardHeight <= 30 ? 30 : chat.keyboardHeight) : 30)
         }
     }
-    
+
     private func send() {
         self.chat.sendMessage(message: self.inputText)
         self.inputText = ""
@@ -81,12 +80,12 @@ struct ContentView_Previews: PreviewProvider {
     }
 }
 
-class StringID : Identifiable {
+class StringID: Identifiable {
 
     var id = UUID()
-    var string:String
+    var string: String
 
-    init(_ string:String) {
+    init(_ string: String) {
         self.string = string
     }
 
