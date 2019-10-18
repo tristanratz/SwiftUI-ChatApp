@@ -33,7 +33,7 @@ struct MessageView: View {
                 if alignment == .trailing || alignment == .center {
                     Spacer()
                 }
-                
+
                 VStack(alignment: .leading) {
                     Text(message)
                         .padding(.all, 10)
@@ -41,7 +41,7 @@ struct MessageView: View {
                         .font((alignment == .center) ? .footnote : .body)
                         .cornerRadius(5)
                 }
-                
+
                 if alignment == .leading || alignment == .center {
                     Spacer()
                 }
@@ -53,6 +53,9 @@ struct MessageView: View {
 
 struct MessageView_Previews: PreviewProvider {
     static var previews: some View {
-        MessageView(message: "Hello", sender: "Me")
+        VStack {
+            MessageView(message: "Hello", sender: "Me")
+            MessageView(message: "Hello", sender: "You")
+        }
     }
 }

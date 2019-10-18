@@ -11,10 +11,10 @@ git clone https://github.com/tristanratz/ChatApp.git
 
 ## Highlights
 
--  Works on iOS, iPadOS and macOS (support for project catalyst)
--  UI completely build in SwiftUI
--  Python Server included. Build with Twisted
--  Client socket class with events (connected, newMessage...)
+*   Works on iOS, iPadOS and macOS (support for project catalyst)
+*   UI completely build in SwiftUI
+*   Python Server included. Build with Twisted
+*   Client socket class with events (connected, newMessage...)
 
 ## Server
 
@@ -65,6 +65,7 @@ When you send a String back and it is not taken yet, it will take it as your nam
 
 After that you are free to send messages and receive messages in the following format.
 
+__Client:__
 ```
 YOUR_NAME:msg:YOUR_MESSAGE
 ```

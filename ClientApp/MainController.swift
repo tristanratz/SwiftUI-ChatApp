@@ -9,7 +9,7 @@
 import Combine
 import SwiftUI
 
-class MainController : ObservableObject {
+class MainController: ObservableObject {
 
     @Published var state: SubviewState = .login
 

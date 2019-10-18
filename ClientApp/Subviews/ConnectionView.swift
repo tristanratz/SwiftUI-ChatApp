@@ -80,16 +80,15 @@ struct ConnectionView: View {
             self.emptyFields = true
             return
         }
-        
+
         if Int(self.port) == nil {
             self.connection.toggleFailed()
             return
         }
-        
+
         connection.connect(ip: self.ipAddress, port: Int(self.port)!)
     }
 }
-
 
 /**
  Our Modal which will pop up when user connects

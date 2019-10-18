@@ -71,13 +71,13 @@ class Chat: ObservableObject {
 
     func receiveMessage(content: String, ip: String) {
         let messageParts = content.split(separator: ":")
-        
+
         if messageParts.count != 3 {
             return
         }
-        
+
         let message = String(messageParts.last!)
-        
+
         newMessage(content: message, name: String(messageParts[0]))
     }
 
@@ -89,26 +89,21 @@ class Chat: ObservableObject {
                 return
             }
         }
-        
+
         print("Not known sender: ", name)
-        
+
         let color: Color
         switch Int.random(in: 0...5) {
         case 0:
             color = Color.green
-            break
         case 1:
             color = Color.yellow
-            break
         case 2:
             color = Color.blue
-            break
         case 3:
             color = Color.red
-            break
         case 4:
             color = Color.purple
-            break
         case 5:
             color = Color.orange
         default:

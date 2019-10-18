@@ -30,7 +30,7 @@ class Connection: ObservableObject {
     init(delegate: MainController) {
         self.controller = delegate
         self.name = ""
-        
+
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(keyboardWillShow),

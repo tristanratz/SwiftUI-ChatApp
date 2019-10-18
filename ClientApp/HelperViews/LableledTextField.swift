@@ -36,7 +36,6 @@ struct LabeledTextField: View {
 
 struct TextField_Previews: PreviewProvider {
     static var previews: some View {
-        LabeledTextField(label: "Port", value: Binding<String>(get: {return ""}
-, set: {_ in }))
+        LabeledTextField(label: "Port", value: Binding<String>(get: {return ""}, set: {_ in }))
     }
 }
