@@ -1,5 +1,5 @@
-from twisted.internet import Factory,Protocol
 from twisted.internet import reactor
+from twisted.internet.protocol import Protocol,Factory
 import argparse
 
 class Chat(Protocol):

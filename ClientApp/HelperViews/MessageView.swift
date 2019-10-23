@@ -24,7 +24,7 @@ struct MessageView: View {
                 Text(sender.uppercased())
                     .foregroundColor(accentColor)
                     .font(.footnote)
-                    .padding(.bottom, -7)
+                    .padding(.bottom, 0)
                 if alignment == .leading {
                     Spacer()
                 }
