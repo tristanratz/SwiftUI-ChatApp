@@ -1,3 +1,13 @@
-language: swift
-osx_image: xcode11
-script: xcodebuild -project ClientApp.xcodeproj -target ClientApp -sdk iphonesimulator ONLY_ACTIVE_ARCH=NO
+matrix:
+    include:
+      - language: swift
+        osx_image: xcode11
+        script: xcodebuild -project ClientApp.xcodeproj -target ClientApp -sdk iphonesimulator ONLY_ACTIVE_ARCH=NO
+      - language: python
+        python: 3.7
+        before_script:
+          - cd Server/
+        install:
+          - pip install -r requirements.txt
+        script:
+          - python main.py
