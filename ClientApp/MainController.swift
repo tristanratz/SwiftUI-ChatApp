@@ -24,9 +24,10 @@ class MainController: ObservableObject {
     func connected() {
         chat!.connection = self.connection
         self.connection!.socket!.stringHandler = chat!.receiveMessage
-        withAnimation {
-            state = .chat
-        }
+        //withAnimation { // This seems to be not working on 13.2
+        state = .chat
+        self.chat?.newMessage(content: "You joined the chat", name: "server")
+        //}
     }
 
     func disconnect() {

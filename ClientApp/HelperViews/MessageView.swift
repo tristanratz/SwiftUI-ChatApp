@@ -40,7 +40,7 @@ struct MessageView: View {
                         .background(messageColor)
                         .font((alignment == .center) ? .footnote : .body)
                         .cornerRadius(5)
-                }
+                }.padding(.bottom, 5)
 
                 if alignment == .leading || alignment == .center {
                     Spacer()
