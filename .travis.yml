@@ -5,7 +5,7 @@ matrix:
         script: xcodebuild -project ClientApp.xcodeproj -target ClientApp -sdk iphonesimulator ONLY_ACTIVE_ARCH=NO
       - language: python
         python: 3.7
-        before_script:
+        before_install:
           - cd Server/
         install:
           - pip install -r requirements.txt
