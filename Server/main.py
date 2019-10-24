@@ -82,9 +82,12 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("-p", "--port", default=8000, type=int,
     help="Port to open server to")
+    ap.add_argument("-t", "--test", default=False, type=bool,
+    help="Whether the application is beeing test built")
     args = vars(ap.parse_args())
     reactor.listenTCP(args["port"], ChatFactory())
-    reactor.run()
+    if args["test"] != True:
+        reactor.run()
 
 
 # this only runs if the module was *not* imported
