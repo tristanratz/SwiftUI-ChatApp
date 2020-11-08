@@ -1,4 +1,4 @@
-# ClientApp
+# SwiftUI ChatApp
 
 [![build status](https://secure.travis-ci.org/tristanratz/ChatApp.png)](http://travis-ci.org/tristanratz/ChatApp)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/b3e3295af348493f9a3918f424b4d7ee)](https://www.codacy.com/manual/tristanratz/ChatApp?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=tristanratz/ChatApp&amp;utm_campaign=Badge_Grade)
