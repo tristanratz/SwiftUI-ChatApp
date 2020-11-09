@@ -28,26 +28,28 @@ struct ChatView: View {
                 .padding(.leading, 30)
                 .padding(.trailing, 30)
             .padding(.bottom, 0)
-            ScrollView {
-                ForEach (self.chat.messages) { el in
-                    if el.sender.name == "You" {
-                        MessageView(message:el.message,
-                                    sender:el.sender.name,
-                                    alignment:.trailing,
-                                    accentColor:el.sender.color,
-                                    messageColor:
-                                        Color(red: 221.0/255.0,
-                                              green: 252.0/255.0,
-                                              blue: 212.0/255.0,
-                                              opacity: 0.5)
-                        )
-                    } else if el.sender.name == "server" {
-                        MessageView(message:el.message, sender:"", alignment:.center, accentColor:.gray)
-                    } else {
-                        MessageView(message:el.message, sender:el.sender.name, accentColor:el.sender.color)
+            GeometryReader { geometry in
+                ScrollView {
+                    ForEach (self.chat.messages) { el in
+                        if el.sender.name == "You" {
+                            MessageView(message:el.message,
+                                        sender:el.sender.name,
+                                        alignment:.trailing,
+                                        accentColor:el.sender.color,
+                                        messageColor:
+                                            Color(red: 221.0/255.0,
+                                                  green: 252.0/255.0,
+                                                  blue: 212.0/255.0,
+                                                  opacity: 0.5)
+                            )
+                        } else if el.sender.name == "server" {
+                            MessageView(message:el.message, sender:"", alignment:.center, accentColor:.gray)
+                        } else {
+                            MessageView(message:el.message, sender:el.sender.name, accentColor:el.sender.color)
+                        }
                     }
                 }
-            } //.content.offset(y:self.chat.messages.count*20)
+            }
             HStack {
                 LabeledTextField(label: "Text",
                                  value: $inputText,
