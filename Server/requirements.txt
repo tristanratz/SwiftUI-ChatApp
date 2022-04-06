@@ -1,2 +1,2 @@
-twisted==20.3.0
+twisted==22.2.0
 numpy==1.17.2
