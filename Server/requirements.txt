@@ -1,2 +1,2 @@
 twisted==20.3.0
-numpy==1.17.2
+numpy==1.22.0
